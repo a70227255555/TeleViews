@@ -1,2 +1,3 @@
 requests
 pyTelegramBotAPI
+telethon>=1.21.1
