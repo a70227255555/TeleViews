@@ -1,6 +1,6 @@
 import requests, re, threading,urllib,random
 from colorama import Fore
-bot = telebot.TeleBot("5796811578:AAEozM1kPmEPDo318hWTRd2jbz9FHtUPTMM")
+bot = telebot.TeleBot("TOKEN")
 bot.reply_to(msg,"ارسل 1 فراغ رابط المنشور",parse_mode="markdown")
 link = input(' [#] رابط المنشور ').replace('https://', '').replace('http://', '')
 _threads = int(input(' [#] عدد المشاهدات '))
