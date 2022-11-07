@@ -1,0 +1,24 @@
+{
+    "name": "Bin-Checker Bot",
+    "description": "A telegram Bin-Checker Bot to check is bins are valid or not.",
+    "keywords": [
+        "telegram",
+        "telethon",
+        "telegram-bot",
+        "bin"
+    ],
+    "repository": "https://github.com/SidraELEzz",
+    "website": "t.me/SidraTools",
+    "success_url": "https://t.me/SidraTools",
+    "env": {
+        "TOKEN": {
+            "description": "Bot token, get it from @BotFather.",
+            "value": ""
+        }
+    },
+    "buildpacks": [
+        {
+            "url": "heroku/python"
+        }
+    ]
+}
