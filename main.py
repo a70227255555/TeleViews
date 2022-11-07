@@ -1,6 +1,7 @@
 import requests, re, threading,urllib,random
 from colorama import Fore
-
+bot = telebot.TeleBot("5796811578:AAEozM1kPmEPDo318hWTRd2jbz9FHtUPTMM")
+bot.reply_to(msg,"ارسل 1 فراغ رابط المنشور",parse_mode="markdown")
 link = input(' [#] رابط المنشور ').replace('https://', '').replace('http://', '')
 _threads = int(input(' [#] عدد المشاهدات '))
 https = requests.get("https://api.proxyscrape.com/?request=displayproxies&proxytype=https&timeout=0",
@@ -22,7 +23,9 @@ _headers = {
 }
 
 
+@bot.message_handler(commands=['start']) 
 def send_views():
+    bot.reply_to(msg,"يتم الرشق…",parse_mode="markdown")
     global sent, bad_proxy, done, next_proxy
     while True:
         proxy = random.choice(proxies)
