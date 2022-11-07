@@ -1,33 +1,39 @@
-import requests, re, threading
-from os import system
+try:
+	import requests,os,sys,logging,telethon, re, threading
+	from telethon import events, Button, TelegramClient
+except ImportError as e:
+	os.system('pip install requests')
+	os.system('pip install telethon=1.21.1')
+try:os.system('pip install requests')
+except:pass
 
-# ---------------
-# Coded for you by @Plugin / @yu5uy
-# First it will ask you for proxy file name for example: proxy.txt
-# Then it will ask for post link for example: https://t.me/Avira/14
-# Then how many threads you want for example: 350
-# Note: Use [ HTTP / HTTPS ] Proxies only!
+logging.basicConfig(level=logging.INFO)
 
-# Channel: t.me/Avira
-# ---------------
+try:
+    API_ID = int(os.environ.get("API_ID", 6))
+    API_HASH = os.environ.get("API_HASH", None)
+    TOKEN = os.environ.get("TOKEN", None)
+except ValueError:
+    print("You forgot to fullfill vars")
+    print("Bot is quitting....")
+    exit()
+except Exception as e:
+    print(f"Error - {str(e)}")
+    print("Bot is quitting.....")
+    exit()
+except ApiIdInvalidError:
+    print("Your API_ID or API_HASH is Invalid.")
+    print("Bot is quitting.")
+    exit()
 
-system("title " + f"TeleView By @Plugin / @yu5uy")
-print('''
-   _____     _            _               
-  /__   \___| | ___/\   /(_) _____      __
-    / /\/ _ \ |/ _ \ \ / / |/ _ \ \ /\ / /
-   / / |  __/ |  __/\ V /| |  __/\ V  V / 
-   \/   \___|_|\___| \_/ |_|\___| \_/\_/  
-         By: [  @Plugin / @yu5uy ]                         
-
-''')
-bot = telebot.TeleBot("TOKEN")
-@bot.message_handler(commands=['/start']) 
-bot.reply_to(msg,"ارسل 1 فراغ رابط المنشور",parse_mode="markdown")
-_proxy_file = "proxy.txt"
-
-_threads = int("1000")
+bot = TelegramClient('bin', API_ID, API_HASH)
+bin = bot.start(bot_token=TOKEN)
+@bin.on(events.NewMessage(pattern="^[!?/]start$"))
 link = input(' [/] Enter your url: ').strip().replace('https://', '').replace('http://', '')
+
+_proxy_file = "proxy.txt"
+_threads = int("1000")
+
 main_url = f'https://{link}?embed=1'
 views_url = 'https://t.me/v/?views='
 
@@ -43,10 +49,32 @@ _headers = {
 }
 
 
-def tit(): system("title " + f"TeleView By @Plugin / @yu5uy -- Stats: ({done}/{count_proxies}) -- Sent: {sent} -- Bad proxies: {bad_proxy}")
 
 
-def send_views():
+async def start(event):
+    if event.is_group:
+        await event.reply("**Bin-Checker is Alive**")
+        return
+    await event.reply(f"**Heya {event.sender.first_name}**\nIts a Bin-Checker Bot To Check Your Bins Are Valid Or Not.", buttons=[
+    [Button.url("Mʏ Sᴏᴜʀᴄᴇ Cᴏᴅᴇ", "https://t.me/SidraTools")]
+    ])
+
+@bin.on(events.NewMessage(pattern="^[!?/]help$"))
+
+async def tit(): system("title " + f"TeleView By @Plugin / @yu5uy -- Stats: ({done}/{count_proxies}) -- Sent: {sent} -- Bad proxies: {bad_proxy}")
+
+async def help(event):
+    text = """
+**Welcome to HelpMenu:**
+
+- /start - To Start Me :)
+- /help - To Get Help Menu
+- /bin - To check is your bin valid or not
+"""
+    await event.reply(text, buttons=[[Button.url("Mʏ Sᴏᴜʀᴄᴇ Cᴏᴅᴇ", "https://github.com/TgxBotz/Bin-Checker")]])
+
+@bin.on(events.NewMessage(pattern="^[!?/]bin"))
+async def send_views():
     global sent, bad_proxy, done, next_proxy
     while True:
         try:
@@ -64,7 +92,6 @@ def send_views():
             print(' [+] View Sent ' + 'Stats Code: '+str(views_req.status_code))
             sent += 1
             done += 1
-            bot.reply_to(msg,"يتم الرشق…",parse_mode="markdown")
             tit()
 
         except requests.exceptions.ConnectionError:
