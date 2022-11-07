@@ -1,3 +1,5 @@
+{
+    "name": "TeleViews",
 "description": "A telegram Bin-Checker Bot to check is bins are valid or not.",
     "keywords": [
         "telegram",
